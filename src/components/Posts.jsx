@@ -1,12 +1,22 @@
 import { useState } from "react";
 import { postData } from "../raw-data/post-data";
 function Posts() {
-  const [posts, setPosts] = useState([]);
+
+  const [posts, setPosts] = useState(postData);
+  const handleLike = (id) => {
+    setPosts(posts.map((post) => post.id === id 
+    ? { ...post, likes: post.likes + 1 } : post));
+  };
+  const handleDislike = (id) => {
+    setPosts(posts.map((post) => post.id === id 
+    ? { ...post, likes: post.likes - 1 } : post));
+  };
+  // const [dislike, setDislike] = useState(0);
   return (
     <div className="app-wrapper">
       <h1 className="app-title">Posts</h1>
       <div className="post-list">
-        {postData.map((post) => (
+        {posts.map((post) => (
           <div className="post-item" key={post.id}>
             <div className="post-header">
               <h2>Post Title #{post.id}</h2>
@@ -17,8 +27,8 @@ function Posts() {
             </div>
             <p className="post-content">{post.content}</p>
             <div className="post-actions">
-              <button className="like-button">Like</button>
-              <button className="dislike-button">Dislike</button>
+              <button className="like-button" onClick={() => handleLike(post.id)}>Like</button>
+              <button className="dislike-button" onClick={() => handleDislike(post.id)}>Dislike</button>
             </div>
           </div>
         ))}
